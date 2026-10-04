@@ -11,6 +11,29 @@ another device (e.g. your laptop).
 > **Phase 1: same Wi-Fi only.** Internet access (TURN server, real certificate, login) is
 > phase 2. See [Roadmap](#roadmap).
 
+![PeerCam monitoring console: live feed with motion heat-map, recording and talk-back active, link stats and camera device status](docs/screenshots/monitor-talking.png)
+
+<table>
+  <tr>
+    <th>Camera node (phone)</th>
+    <th>Monitor on a phone</th>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/camera-phone.png" alt="Camera node on a phone: preview with LIVE and VOICE IN badges, access code and node status" width="320"></td>
+    <td><img src="docs/screenshots/monitor-phone.png" alt="Monitoring console on a phone-sized screen with motion alert" width="320"></td>
+  </tr>
+  <tr>
+    <th>Landing page + system check</th>
+    <th>Connect with an access code</th>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/landing.png" alt="Landing page with camera/monitor choice and system check"></td>
+    <td><img src="docs/screenshots/join.png" alt="Monitor join screen asking for the access code"></td>
+  </tr>
+</table>
+
+<sub>Screenshots use a synthetic test scene as the camera feed.</sub>
+
 ## Features
 
 **Monitoring console (viewer)**
