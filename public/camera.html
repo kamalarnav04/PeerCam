@@ -1,0 +1,83 @@
+<!doctype html>
+<!--
+  camera.html: open this on the device that films (your phone).
+  Shows the local preview with a LIVE badge, the access code to enter on the
+  monitor, and this node's status (link, uptime, battery...).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#04070a">
+  <title>Camera Node · PeerCam</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="./" class="brand" aria-label="PeerCam home">PEERCAM<span class="cursor">_</span></a>
+    <span class="crumb">// CAMERA NODE</span>
+    <span class="topbar-right">
+      <span id="node-state" class="pill" data-state="idle">BOOTING</span>
+      <time data-clock class="clock">--:--:--</time>
+    </span>
+  </header>
+
+  <main class="page camera-page">
+    <div class="feed" id="feed">
+      <!-- muted + playsinline are required for autoplay on phones (esp. iPhone). -->
+      <video id="preview" autoplay playsinline muted></video>
+      <div class="hud-overlay" aria-hidden="true">
+        <span class="corner tl"></span><span class="corner tr"></span>
+        <span class="corner bl"></span><span class="corner br"></span>
+        <div class="hud-tl">
+          <span id="live-badge" class="live-badge" hidden>● LIVE</span>
+          <span id="talk-badge" class="badge badge-talk" hidden>◉ VOICE IN</span>
+        </div>
+        <div class="hud-tr"><time data-clock>--:--:--</time></div>
+        <div class="hud-bl">CAM // <span id="hud-room">------</span></div>
+        <div class="hud-br" id="hud-tx">TX --</div>
+      </div>
+    </div>
+
+    <!-- Shown only if the browser blocks talk-back audio until the user taps. -->
+    <button id="enable-audio" type="button" class="btn btn-warn btn-wide" hidden>
+      ▶ Tap to enable talk-back audio
+    </button>
+
+    <p id="error" class="alert" role="alert" hidden></p>
+
+    <section class="grid-2">
+      <div class="panel">
+        <h2 class="panel-title">Access code</h2>
+        <div id="room-code" class="code-big">······</div>
+        <p class="dim small">
+          On the monitor choose <em>View a camera</em> and enter this code, or open:<br>
+          <a id="viewer-link" class="link-break" href="#"></a>
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">Node status</h2>
+        <dl class="readout">
+          <dt>Monitor</dt><dd id="status">Starting camera…</dd>
+          <dt>Link</dt><dd id="st-link">--</dd>
+          <dt>TX</dt><dd id="st-tx">--</dd>
+          <dt>Uptime</dt><dd id="st-uptime">--</dd>
+          <dt>Battery</dt><dd id="st-battery">--</dd>
+          <dt>Screen</dt><dd id="st-wake">--</dd>
+        </dl>
+      </div>
+    </section>
+
+    <p class="dim small center">
+      Keep this page open in the foreground with the phone on a charger.
+      Phones pause the camera when the screen turns off.
+    </p>
+
+    <!-- Plays the monitor's voice (two-way talk). -->
+    <audio id="talkback" autoplay></audio>
+  </main>
+
+  <script type="module" src="js/camera.js"></script>
+</body>
+</html>

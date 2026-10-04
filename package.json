@@ -1,0 +1,18 @@
+{
+  "name": "peercam",
+  "version": "0.2.0",
+  "description": "PeerCam: self-hosted P2P security camera. A phone streams live video/audio to a browser monitoring console over WebRTC.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "selfsigned": "^5.5.0",
+    "ws": "^8.22.0"
+  }
+}

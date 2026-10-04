@@ -1,0 +1,3 @@
+node_modules/
+# Auto-generated self-signed TLS cert + private key (never commit a private key)
+certs/

@@ -1,0 +1,52 @@
+<!doctype html>
+<!--
+  index.html: landing page. Pick what this device should be.
+  The "System check" panel (js/index.js) shows which browser features this
+  device supports, so problems are obvious before you start.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#04070a">
+  <title>PeerCam</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="./" class="brand" aria-label="PeerCam home">PEERCAM<span class="cursor">_</span></a>
+    <span class="crumb">// P2P SURVEILLANCE</span>
+    <span class="topbar-right"><time data-clock class="clock">--:--:--</time></span>
+  </header>
+
+  <main class="page landing">
+    <section class="hero">
+      <p class="eyebrow">Encrypted · peer-to-peer · self-hosted</p>
+      <h1 class="glitch" data-text="PEERCAM">PEERCAM</h1>
+      <p class="dim">Turn one of your devices into a live camera and watch it from another. Video goes straight between them over WebRTC.</p>
+    </section>
+
+    <nav class="modes">
+      <a class="mode-card" href="camera.html">
+        <span class="mode-index">[01]</span>
+        <span class="mode-title">Use this device as Camera</span>
+        <span class="mode-desc">Broadcast this device's camera &amp; microphone</span>
+        <span class="mode-go">INITIALIZE →</span>
+      </a>
+      <a class="mode-card" href="viewer.html">
+        <span class="mode-index">[02]</span>
+        <span class="mode-title">View a camera</span>
+        <span class="mode-desc">Open the monitoring console with an access code</span>
+        <span class="mode-go">CONNECT →</span>
+      </a>
+    </nav>
+
+    <section class="panel syscheck">
+      <h2 class="panel-title">System check</h2>
+      <ul id="checks" class="checks"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="js/index.js"></script>
+</body>
+</html>

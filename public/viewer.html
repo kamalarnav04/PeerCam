@@ -1,0 +1,150 @@
+<!doctype html>
+<!--
+  viewer.html: the monitoring console (open on your laptop).
+  Step 1: enter the access code shown on the camera.
+  Step 2: live feed with HUD, controls (snapshot, record, talk), link stats,
+          camera device status, motion detection and an event log.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#04070a">
+  <title>Monitor · PeerCam</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="./" class="brand" aria-label="PeerCam home">PEERCAM<span class="cursor">_</span></a>
+    <span class="crumb">// MONITOR</span>
+    <span class="topbar-right">
+      <span id="link-state" class="pill" data-state="idle">IDLE</span>
+      <time data-clock class="clock">--:--:--</time>
+    </span>
+  </header>
+
+  <main class="page">
+    <!-- ===== Step 1: access code ===== -->
+    <section id="join" class="join">
+      <form id="join-form" class="panel join-panel" autocomplete="off">
+        <h2 class="panel-title">Establish uplink</h2>
+        <p class="terminal-line">&gt; enter the access code shown on the camera node</p>
+        <div class="row">
+          <input id="room-input" name="room" maxlength="12" placeholder="K7PX2M" aria-label="Access code"
+                 autocapitalize="characters" spellcheck="false" required>
+          <button type="submit" class="btn btn-primary">Connect</button>
+        </div>
+        <p id="form-error" class="alert" hidden></p>
+        <div id="recent" class="recent" hidden>
+          <span class="dim">Recent:</span>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===== Step 2: monitoring console ===== -->
+    <section id="watch" class="console" hidden>
+      <div class="console-main">
+        <div class="feed" id="feed">
+          <!-- Starts muted: browsers only allow autoplay without sound. -->
+          <video id="remote" autoplay playsinline muted></video>
+          <canvas id="motion-overlay" class="motion-overlay" hidden></canvas>
+          <div id="placeholder" class="no-signal">
+            <span>NO SIGNAL</span>
+            <small id="placeholder-sub">Waiting for camera…</small>
+          </div>
+          <div class="hud-overlay" aria-hidden="true">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <div class="hud-tl">
+              <span id="live-badge" class="live-badge" hidden>● LIVE</span>
+              <span id="rec-badge" class="badge badge-rec" hidden>● REC <span id="rec-time">00:00</span></span>
+              <span id="talk-badge" class="badge badge-talk" hidden>◉ TALKING</span>
+              <span id="motion-badge" class="badge badge-motion" hidden>⚠ MOTION</span>
+            </div>
+            <div class="hud-tr"><time data-clock>--:--:--</time></div>
+            <div class="hud-bl">CAM // <span id="room-label"></span></div>
+            <div class="hud-br" id="hud-stats">--</div>
+          </div>
+        </div>
+
+        <div class="controls" role="toolbar" aria-label="Camera controls">
+          <button id="snapshot" type="button" class="btn" disabled>
+            <span class="btn-label">Snapshot</span><kbd>S</kbd>
+          </button>
+          <button id="record" type="button" class="btn btn-rec" disabled>
+            <span class="btn-label">Record</span><kbd>R</kbd>
+          </button>
+          <button id="talk" type="button" class="btn btn-talk" disabled>
+            <span class="btn-label">Hold to talk</span><kbd>Space</kbd>
+          </button>
+          <button id="unmute" type="button" class="btn">
+            <span class="btn-label">Unmute audio</span><kbd>M</kbd>
+          </button>
+          <button id="fullscreen" type="button" class="btn">
+            <span class="btn-label">Fullscreen</span><kbd>F</kbd>
+          </button>
+          <a href="viewer.html" class="btn btn-ghost">Change room</a>
+        </div>
+      </div>
+
+      <aside class="console-side">
+        <div class="panel">
+          <h2 class="panel-title">Link</h2>
+          <dl class="readout">
+            <dt>Status</dt><dd id="status"></dd>
+            <dt>Path</dt><dd id="st-link">--</dd>
+            <dt>Latency</dt><dd id="st-rtt">--</dd>
+            <dt>Bitrate</dt><dd id="st-bitrate">--</dd>
+            <dt>Video</dt><dd id="st-video">--</dd>
+            <dt>Loss</dt><dd id="st-loss">--</dd>
+            <dt>Codec</dt><dd id="st-codec">--</dd>
+          </dl>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Camera device</h2>
+          <dl class="readout">
+            <dt>Battery</dt>
+            <dd>
+              <span id="dev-battery">--</span>
+              <span class="bar" aria-hidden="true"><span id="dev-battery-bar" class="bar-fill"></span></span>
+            </dd>
+            <dt>Uptime</dt><dd id="dev-uptime">--</dd>
+            <dt>Network</dt><dd id="dev-network">--</dd>
+            <dt>Device</dt><dd id="dev-device">--</dd>
+            <dt>Sensor</dt><dd id="dev-sensor">--</dd>
+            <dt>Screen</dt><dd id="dev-wake">--</dd>
+          </dl>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Motion detection</h2>
+          <label class="switch">
+            <input id="motion-arm" type="checkbox">
+            <span class="switch-track" aria-hidden="true"></span>
+            <span id="motion-arm-label">Disarmed</span><kbd>D</kbd>
+          </label>
+          <div class="meter" aria-label="Motion level">
+            <span id="motion-meter" class="meter-fill"></span>
+            <span id="motion-mark" class="meter-mark" title="Trigger level"></span>
+          </div>
+          <p class="meter-legend"><span>Activity <span id="motion-level">0.0%</span></span><span>Trigger <span id="motion-trigger">5.2%</span></span></p>
+          <label class="range">
+            <span>Sensitivity <span id="sensitivity-value">50</span></span>
+            <input id="sensitivity" type="range" min="1" max="100" value="50">
+          </label>
+          <label class="check"><input id="motion-sound" type="checkbox" checked> Alert sound</label>
+          <label class="check"><input id="motion-notify" type="checkbox"> Desktop notification (when tab is hidden)</label>
+        </div>
+
+        <div class="panel panel-log">
+          <h2 class="panel-title">Event log</h2>
+          <ol id="log" class="log"></ol>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="js/viewer.js"></script>
+</body>
+</html>
